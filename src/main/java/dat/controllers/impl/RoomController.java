@@ -2,6 +2,7 @@ package dat.controllers.impl;
 
 import dat.config.HibernateConfig;
 import dat.controllers.IController;
+import dat.daos.impl.HotelDAO;
 import dat.daos.impl.RoomDAO;
 import dat.dtos.HotelDTO;
 import dat.dtos.RoomDTO;
@@ -17,10 +18,12 @@ import java.util.function.BiFunction;
 public class RoomController implements IController<RoomDTO, Integer> {
 
     private RoomDAO dao;
+    private HotelDAO hotelDAO;
 
     public RoomController() {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory("hotel");
         this.dao = RoomDAO.getInstance(emf);
+        this.hotelDAO = HotelDAO.getInstance(emf);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
         // request
         RoomDTO jsonRequest = validateEntity(ctx);
 
-        int hotelId = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int hotelId = ctx.pathParamAsClass("id", Integer.class).check(hotelDAO::validatePrimaryKey, "Not a valid id").get();
         Boolean hasRoom = validateHotelRoomNumber.apply(jsonRequest.getRoomNumber(), hotelId);
 
         if (hasRoom) {
