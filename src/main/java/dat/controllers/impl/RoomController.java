@@ -26,7 +26,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
     @Override
     public void read(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         // entity
         RoomDTO roomDTO = dao.read(id);
         // response
@@ -48,7 +48,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
         // request
         RoomDTO jsonRequest = validateEntity(ctx);
 
-        int hotelId = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int hotelId = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         Boolean hasRoom = validateHotelRoomNumber.apply(jsonRequest.getRoomNumber(), hotelId);
 
         if (hasRoom) {
@@ -66,7 +66,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
     @Override
     public void update(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         // entity
         RoomDTO roomDTO = dao.update(id, validateEntity(ctx));
         // response
@@ -77,7 +77,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         // entity
         dao.delete(id);
         // response
@@ -93,6 +93,7 @@ public class RoomController implements IController<RoomDTO, Integer> {
     @Override
     public RoomDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(RoomDTO.class)
+                .required()
                 .check(r -> r.getRoomNumber() != null && r.getRoomNumber() > 0, "Not a valid room number")
                 .check(r -> r.getRoomType() != null, "Not a valid room type")
                 .check(r -> r.getRoomPrice() != null , "Not a valid price")

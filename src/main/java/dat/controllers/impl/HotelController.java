@@ -22,7 +22,7 @@ public class HotelController implements IController<HotelDTO, Integer> {
     @Override
     public void read(Context ctx)  {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         // DTO
         HotelDTO hotelDTO = dao.read(id);
         // response
@@ -53,7 +53,7 @@ public class HotelController implements IController<HotelDTO, Integer> {
     @Override
     public void update(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         // dto
         HotelDTO hotelDTO = dao.update(id, validateEntity(ctx));
         // response
@@ -64,7 +64,7 @@ public class HotelController implements IController<HotelDTO, Integer> {
     @Override
     public void delete(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = ctx.pathParamAsClass("id", Integer.class).required().check(this::validatePrimaryKey, "Not a valid id").get();
         dao.delete(id);
         // response
         ctx.res().setStatus(204);
@@ -78,6 +78,7 @@ public class HotelController implements IController<HotelDTO, Integer> {
     @Override
     public HotelDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(HotelDTO.class)
+                .required()
                 .check( h -> h.getHotelAddress() != null && !h.getHotelAddress().isEmpty(), "Hotel address must be set")
                 .check( h -> h.getHotelName() != null && !h.getHotelName().isEmpty(), "Hotel name must be set")
                 .check( h -> h.getHotelType() != null, "Hotel type must be set")

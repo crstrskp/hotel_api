@@ -24,9 +24,11 @@ public class ApplicationConfig {
 
     public static void configuration(JavalinConfig config) {
         config.router.contextPath = "/api/v1"; // base path for all routes
-        config.showJavalinBanner = false;
+        config.startup.showJavalinBanner = false;
         config.http.defaultContentType = "application/json"; // default content type for requests
-        config.router.apiBuilder(routes.getRoutes());
+        config.routes.apiBuilder(routes.getRoutes());
+        config.routes.exception(ApiException.class, exceptionController::apiExceptionHandler);
+        config.routes.exception(Exception.class, exceptionController::exceptionHandler);
 
         // Plugins
         config.bundledPlugins.enableRouteOverview("/routes"); // enables route overview at /routes
@@ -48,8 +50,6 @@ public class ApplicationConfig {
     public static Javalin startServer(int port) {
         routes = new Routes();
         var app = Javalin.create(ApplicationConfig::configuration);
-        app.exception(ApiException.class, exceptionController::apiExceptionHandler);
-        app.exception(Exception.class, exceptionController::exceptionHandler);
         app.start(port);
         return app;
     }
