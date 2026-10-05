@@ -10,8 +10,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <hibernate-version>6.2.4.Final</hibernate-version>
         <restassured.version>5.5.0</restassured.version>
         <testcontainers.version>1.18.0</testcontainers.version>
@@ -26,7 +26,7 @@
         <db.name>startcode</db.name>
         <db.username>postgres</db.username>
         <db.password>postgres</db.password>
-        <db.connection.string>jdbc:postgresql://localhost:5432/</db.connection.string>
+        <db.connection.string>jdbc:postgresql://localhost:5433/</db.connection.string>
         <!--  Javalin    -->
         <javalin.port>7070</javalin.port>
     </properties>
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
+            <version>1.18.48</version>
             <scope>provided</scope>
         </dependency>
         <!--  DB    -->
