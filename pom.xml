@@ -15,7 +15,7 @@
         <lombok.version>1.18.48</lombok.version>
         <hibernate-version>6.2.4.Final</hibernate-version>
         <restassured.version>5.5.0</restassured.version>
-        <testcontainers.version>1.18.0</testcontainers.version>
+        <testcontainers.version>1.21.4</testcontainers.version>
         <junit.version>5.9.1</junit.version>
 
         <!-- Project properties  -->
