@@ -14,6 +14,9 @@ It is implemented using Javalin and JPA
 5. Request the `http://localhost:7070/hotels` endpoint in your browser to see the list of hotels and rooms
 6. Use the dev.http file to test the routes, GET/POST/PUT/DELETE requests are available
 
+### Exercises
+[tuesday class exercise](./tuesday-security-exercise.md)
+
 ### API tests
 
 With JDK 25 and Docker running, execute `mvn test` (or run `HotelRouteTest` in your IDE).
@@ -26,3 +29,4 @@ to check GET, POST, and DELETE, including whether changes persist. They delibera
 send no authentication token. When authentication is added to the write routes,
 the POST and DELETE tests should fail until their requests are updated to log in
 and send a bearer token. GET can continue to pass if reading hotels remains public.
+
