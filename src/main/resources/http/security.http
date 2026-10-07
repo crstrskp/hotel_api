@@ -1,5 +1,48 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+@username = student
+@password = classroom-password
 
-###
+### Public endpoint — no token needed
+GET {{url}}/auth/test
+
+### Register once — creates an account with the user role
+# Repeating this request with the same username returns 409.
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### Login — saves the JWT for the requests below
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {%
+    if (response.status === 200) {
+        client.global.set("securityToken", response.body.token);
+    }
+%}
+
+### USER endpoint — run login first
+GET {{url}}/protected/user_demo
+Authorization: Bearer {{securityToken}}
+
+### ADMIN endpoint — the registered user lacks the admin role
+# This request should be rejected. To try successful access, log in as an existing admin.
+GET {{url}}/protected/admin_demo
+Authorization: Bearer {{securityToken}}
+
+### Incorrect password — returns 401
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "wrong-password"
+}
