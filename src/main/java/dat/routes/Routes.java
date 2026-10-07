@@ -11,8 +11,11 @@ public class Routes {
 
     public EndpointGroup getRoutes() {
         return () -> {
-                path("/hotels", hotelRoute.getRoutes());
-                path("/rooms", roomRoute.getRoutes());
+            SecurityRoutes.getSecurityRoutes().addEndpoints();
+            SecurityRoutes.getSecuredRoutes().addEndpoints();
+
+            path("/hotels", hotelRoute.getRoutes());
+            path("/rooms", roomRoute.getRoutes());
         };
     }
 }
