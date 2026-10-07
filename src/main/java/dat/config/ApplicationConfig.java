@@ -1,6 +1,7 @@
 package dat.config;
 
 import dat.controllers.impl.ExceptionController;
+import dat.controllers.impl.SecurityController;
 import dat.exceptions.ApiException;
 import dat.routes.Routes;
 import io.javalin.Javalin;
@@ -21,11 +22,14 @@ public class ApplicationConfig {
     private static Routes routes;
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
     private static final ExceptionController exceptionController = new ExceptionController();
+    private static final SecurityController securityController = SecurityController.getInstance();
 
     public static void configuration(JavalinConfig config) {
         config.router.contextPath = "/api/v1"; // base path for all routes
         config.startup.showJavalinBanner = false;
         config.http.defaultContentType = "application/json"; // default content type for requests
+        config.routes.beforeMatched(securityController::authenticate);
+        config.routes.beforeMatched(securityController::authorize);
         config.routes.apiBuilder(routes.getRoutes());
         config.routes.exception(ApiException.class, exceptionController::apiExceptionHandler);
         config.routes.exception(Exception.class, exceptionController::exceptionHandler);
